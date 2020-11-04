@@ -20,4 +20,5 @@ const invoiceSchema = new Schema({
 	},
 });
 
+invoiceSchema.index({ productName: 1, sparse: true }, { background: true });
 module.exports = mongoose.model('Invoice', invoiceSchema);

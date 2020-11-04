@@ -77,7 +77,7 @@ const Layout = () => {
 			};
 
 			await axios
-				.post(`http://localhost:5000/api/api/invoice`, body)
+				.post(`/api/api/invoice`, body)
 				.then((res) => {
 					console.log(res);
 					console.log(res.data);

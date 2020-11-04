@@ -20,7 +20,7 @@ const Layout = () => {
 
 	useEffect(() => {
 		async function getInvoices() {
-			const res = await axios.get(`http://localhost:5000/api/api/invoice`);
+			const res = await axios.get(`/api/api/invoice`);
 			if (!res.success) {
 				setInvoices(res.data.data.invoice);
 				console.log(res);
@@ -33,14 +33,14 @@ const Layout = () => {
 		const search = e.target.value;
 		let res;
 		if (search) {
-			res = await axios.get(`http://localhost:5000/api/api/search`);
+			res = await axios.get(`/api/api/search`);
 
 			if (!res.success) {
 				setInvoices(res.data.data.invoice);
 				console.log(res);
 			}
 		} else {
-			res = await axios.get(`http://localhost:5000/api/api/invoice`);
+			res = await axios.get(`/api/api/invoice`);
 			if (!res.success) {
 				setInvoices(res.data.data.invoice);
 
