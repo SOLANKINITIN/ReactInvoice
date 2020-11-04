@@ -1,0 +1,4 @@
+{
+ 
+  "db": "mongodb+srv://nitin:nitin@cluster1-uehll.mongodb.net/test?retryWrites=true&w=majority"
+}
