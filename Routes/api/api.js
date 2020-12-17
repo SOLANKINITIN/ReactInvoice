@@ -40,7 +40,7 @@ router.get('/invoice', async (req, res, next) => {
 		res.status(500).send('Server Error');
 	}
 });
-router.get('/invoice/search/:', async (req, res, next) => {
+router.get('/search/:search', async (req, res, next) => {
 	try {
 		const { search } = req.params;
 		console.log(search);

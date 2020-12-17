@@ -20,11 +20,12 @@ const Layout = () => {
 
 	useEffect(() => {
 		async function getInvoices() {
-			const res = await axios.get(`/api/api/invoice`);
-			if (!res.success) {
-				setInvoices(res.data.data.invoice);
-				console.log(res);
-			}
+			const res = await axios.get(
+				`${process.env.REACT_APP_PORT}/api/api/invoice`
+			);
+
+			setInvoices(res.data.data.invoice);
+			console.log(res);
 		}
 		getInvoices();
 	}, []);
@@ -33,19 +34,18 @@ const Layout = () => {
 		const search = e.target.value;
 		let res;
 		if (search) {
-			res = await axios.get(`/api/api/search`);
+			res = await axios.get(
+				`${process.env.REACT_APP_PORT}/api/api/search/${search}`
+			);
 
-			if (!res.success) {
-				setInvoices(res.data.data.invoice);
-				console.log(res);
-			}
+			setInvoices(res.data.data.invoice);
+			console.log(res);
 		} else {
-			res = await axios.get(`/api/api/invoice`);
-			if (!res.success) {
-				setInvoices(res.data.data.invoice);
+			res = await axios.get(`${process.env.REACT_APP_PORT}/api/api/invoice`);
 
-				console.log(res);
-			}
+			setInvoices(res.data.data.invoice);
+
+			console.log(res);
 		}
 	};
 	return (

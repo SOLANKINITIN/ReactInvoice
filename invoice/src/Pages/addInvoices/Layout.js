@@ -76,13 +76,11 @@ const Layout = () => {
 				image: url,
 			};
 
-			await axios
-				.post(`/api/api/invoice`, body)
-				.then((res) => {
-					console.log(res);
-					console.log(res.data);
-					history.push('/');
-				});
+			await axios.post(`/api/api/invoice`, body).then((res) => {
+				console.log(res);
+				console.log(res.data);
+				history.push('/');
+			});
 		} catch (err) {
 		} finally {
 			setSubmitting(false);
