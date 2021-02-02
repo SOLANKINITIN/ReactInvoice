@@ -1,124 +1,128 @@
-import React, { useState, useEffect } from 'react';
-import useStyles from './style';
-import Header from '../../Components/Header';
-import axios from 'axios';
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import SearchIcon from '@material-ui/icons/Search';
+import React, { useState, useEffect } from "react";
+import useStyles from "./style";
+import Header from "../../Components/Header";
+import axios from "axios";
+import AddBoxIcon from "@material-ui/icons/AddBox";
+import SearchIcon from "@material-ui/icons/Search";
 import {
-	Container,
-	Button,
-	Grid,
-	Card,
-	Typography,
-	TextField,
-	InputAdornment,
-} from '@material-ui/core';
-
+  Container,
+  Button,
+  Grid,
+  Card,
+  Typography,
+  TextField,
+  InputAdornment,
+} from "@material-ui/core";
+import Moment from "react-moment";
 const Layout = () => {
-	const classes = useStyles();
-	const [invoices, setInvoices] = useState([]);
+  const classes = useStyles();
+  const isItemArray = JSON.parse(localStorage.getItem("itemarray"))
+    ? JSON.parse(localStorage.getItem("itemarray"))
+    : [];
 
-	useEffect(() => {
-		async function getInvoices() {
-			const res = await axios.get(
-				`${process.env.REACT_APP_PORT}/api/api/invoice`
-			);
+  const [invoices, setInvoices] = useState(isItemArray);
 
-			setInvoices(res.data.data.invoice);
-			console.log(res);
-		}
-		getInvoices();
-	}, []);
+  useEffect(() => {
+    async function getInvoices() {
+      const res = await axios.get(`${process.env.REACT_APP_PORT}/api//invoice`);
 
-	const searchInvoice = async (e) => {
-		const search = e.target.value;
-		let res;
-		if (search) {
-			res = await axios.get(
-				`${process.env.REACT_APP_PORT}/api/api/search/${search}`
-			);
+      setInvoices(res.data.data.invoice);
+      localStorage.setItem("itemarray", JSON.stringify(res.data.data.invoice));
+      console.log(res);
+    }
+    getInvoices();
+  }, []);
 
-			setInvoices(res.data.data.invoice);
-			console.log(res);
-		} else {
-			res = await axios.get(`${process.env.REACT_APP_PORT}/api/api/invoice`);
+  const searchInvoice = async (e) => {
+    const search = e.target.value;
+    let res;
+    if (search) {
+      res = await axios.get(
+        `${process.env.REACT_APP_PORT}/api/api/search/${search}`
+      );
 
-			setInvoices(res.data.data.invoice);
+      console.log("data", res);
+      setInvoices(res.data.data.invoice);
+    } else {
+      res = await axios.get(`${process.env.REACT_APP_PORT}/api/api/invoice`);
 
-			console.log(res);
-		}
-	};
-	return (
-		<div>
-			<Header />
+      setInvoices(res.data.data.invoice);
 
-			<Container className={classes.container} maxWidth='lg'>
-				<Typography variant='h5' className={classes.InvoiceButton} align='left'>
-					Invoices
-				</Typography>
-				<div className={classes.BillAddButton}>
-					<Button
-						variant='contained'
-						href='/addInvoices'
-						startIcon={<AddBoxIcon />}
-						className={classes.button}>
-						Add Invoice
-					</Button>
-				</div>
-				<div className={classes.SearchHolder}>
-					<TextField
-						name='Search'
-						className={classes.textField}
-						variant='outlined'
-						placeholder='Search Your Invoices'
-						onChange={searchInvoice}
-						fullWidth
-						InputProps={{
-							startAdornment: (
-								<InputAdornment>
-									<SearchIcon />
-								</InputAdornment>
-							),
-						}}
-					/>
-				</div>
-				<Container className={classes.cardGrid} maxWidth='xl'>
-					<Grid container spacing={3}>
-						{invoices &&
-							invoices.map((invoice, index) => (
-								<Grid item key={index} xs={12} md={4} xl={4} lg={4}>
-									<Card>
-										<div>
-											<img
-												src={invoice.image}
-												className={classes.image}
-												alt=''
-											/>
-										</div>
+      console.log(res);
+    }
+  };
+  return (
+    <div>
+      <Header />
 
-										<div className={classes.action}>
-											<Grid container spacing={3}>
-												<Grid item xs={6} sm={6} xl={6} lg={6}>
-													<Typography variant='h6'>
-														{' '}
-														{invoice.productName}{' '}
-													</Typography>
-												</Grid>
-												<Grid item xs={6} sm={6} xl={6} lg={6}>
-													<Typography variant='h6' component='p'>
-														${invoice.price}
-													</Typography>
-												</Grid>
-											</Grid>
-											<Typography variant='h6'> {invoice.date} </Typography>
-										</div>
-									</Card>
-								</Grid>
-							))}
-					</Grid>
-				</Container>
-			</Container>
-		</div>
-	);
+      <Container className={classes.container} maxWidth="lg">
+        <Typography variant="h5" className={classes.InvoiceButton} align="left">
+          Invoices
+        </Typography>
+        <div className={classes.BillAddButton}>
+          <Button
+            variant="contained"
+            href="/addInvoices"
+            startIcon={<AddBoxIcon />}
+            className={classes.button}
+          >
+            Add Invoice
+          </Button>
+        </div>
+        <div className={classes.SearchHolder}>
+          <TextField
+            name="Search"
+            className={classes.textField}
+            variant="outlined"
+            placeholder="Search Your Invoices"
+            onChange={searchInvoice}
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment>
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
+        <Container className={classes.cardGrid} maxWidth="xl">
+          <Grid container spacing={3}>
+            {invoices &&
+              invoices.map((invoice, index) => (
+                <Grid item key={index} xs={12} md={4} xl={4} lg={4}>
+                  <Card>
+                    <div>
+                      <img
+                        src={invoice.image}
+                        className={classes.image}
+                        alt=""
+                      />
+                    </div>
+
+                    <div className={classes.action}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={6} sm={6} xl={6} lg={6}>
+                          <Typography variant="h6">
+                            {invoice.productName}{" "}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6} sm={6} xl={6} lg={6}>
+                          <Typography variant="h6" component="p">
+                            {localStorage.getItem("productName")}$
+                            {invoice.price}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                      <Moment format="YYYY/MM/DD">{invoice.date}</Moment>
+                    </div>
+                  </Card>
+                </Grid>
+              ))}
+          </Grid>
+        </Container>
+      </Container>
+    </div>
+  );
 };
 export default Layout;
